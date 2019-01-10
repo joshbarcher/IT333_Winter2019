@@ -3,7 +3,7 @@ package dsexample;
 import java.util.Arrays;
 
 //this will be a bag class with ordered elements
-public class OrderedBag<T extends Comparable>
+public class OrderedBag<T extends Comparable<T>>
 {
     private T[] data;
     private int size = 0;
@@ -15,7 +15,7 @@ public class OrderedBag<T extends Comparable>
             throw new IllegalArgumentException("Size must be positive: " + size);
         }
 
-        data = (T[])new Object[size];
+        data = (T[])new Comparable[size];
     }
 
     public void add(T element)
@@ -34,5 +34,17 @@ public class OrderedBag<T extends Comparable>
     {
         //if asked to sort the bag, we sort the internal array
         Arrays.sort(data);
+    }
+
+    public boolean isInBag(T element)
+    {
+        for (T current : data)
+        {
+            if (current.equals(element))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
