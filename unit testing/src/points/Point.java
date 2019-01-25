@@ -23,13 +23,31 @@ public class Point
     }
 
     /**
+     * Retrieves the x component.
+     * @return the x value
+     */
+    public double getX()
+    {
+        return x;
+    }
+
+    /**
+     * Retrieves the y component.
+     * @return the y value
+     */
+    public double getY()
+    {
+        return y;
+    }
+
+    /**
      * Reports whether this points is located at the origin.
      *
      * @return true if this points is at (0,0), or false otherwise
      */
     public boolean isAtOrigin()
     {
-        return x == 0 && y == 0;
+        return x == 0;
     }
 
     /**
