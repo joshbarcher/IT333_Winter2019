@@ -17,8 +17,13 @@ public class Test
         System.out.println("contains(60)" + bst.contains(60));
         System.out.println("contains(0)" + bst.contains(0));
 
-        bst.remove(60);
+        //bst.remove(60);
         System.out.println(bst.contains(60));
+
+        //test for node depth
+        System.out.println("Depth(55): " + bst.depth(55));
+        System.out.println("Depth(60): " + bst.depth(60));
+        System.out.println("Depth(53): " + bst.depth(53));
     }
 
 }

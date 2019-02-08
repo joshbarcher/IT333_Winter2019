@@ -236,6 +236,34 @@ public class BinarySearchTree<T extends Comparable<T>> implements Iterable<T>
         return new BSTIterator(root);
     }
 
+    public int depth(T element)
+    {
+        return depth(root, element, 0);
+    }
+
+    private int depth(Node current, T element, int currentDepth)
+    {
+        //base case
+        if (current == null)
+        {
+            return -1;
+        }
+
+        int compare = element.compareTo(current.data);
+        if (compare == 0)
+        {
+            return currentDepth;
+        }
+        else if (compare < 0)
+        {
+            return depth(current.left, element, currentDepth + 1);
+        }
+        else //if (compare > 0)
+        {
+            return depth(current.right, element, currentDepth + 1);
+        }
+    }
+
     private class NaiveIterator implements Iterator<T>
     {
         private Object[] data;
