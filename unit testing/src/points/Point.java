@@ -47,7 +47,7 @@ public class Point
      */
     public boolean isAtOrigin()
     {
-        return x == 0;
+        return x == 0 && y == 0;
     }
 
     /**
