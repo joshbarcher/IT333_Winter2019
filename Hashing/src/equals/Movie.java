@@ -39,7 +39,8 @@ public class Movie
         {
             return true;
         }
-        else if (!(other instanceof Movie))
+        //is this a Movie object instantiated from the Movie class
+        else if (!other.getClass().equals(this.getClass()))
         {
             return false;
         }
@@ -48,8 +49,7 @@ public class Movie
             //what do I know about other at this point?
             Movie otherMovie = (Movie)other;
 
-            return this.title.equals(otherMovie.title) &&
-                    this.yearReleased == otherMovie.yearReleased;
+            return this.title.equals(otherMovie.title);
         }
     }
 
