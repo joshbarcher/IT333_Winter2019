@@ -1,6 +1,8 @@
 package hashing;
 
-public class HashTable<T>
+import java.util.Iterator;
+
+public class HashTable<T> implements Iterable<T>
 {
     private static final double LOAD_FACTOR = 0.7;
     private static final int INITIAL_TABLE_SIZE = 10;
@@ -18,7 +20,7 @@ public class HashTable<T>
     public void add(T element)
     {
         //is the table too full?
-        if ((double)size + 1 / elements.length >= LOAD_FACTOR)
+        if ((double)(size + 1) / elements.length >= LOAD_FACTOR)
         {
             resize();
         }
@@ -60,17 +62,96 @@ public class HashTable<T>
 
     public boolean contains(T element)
     {
-        return false;
+        HashElement<T> position = findPosition(element);
+        return position != null && position.active;
     }
 
     public boolean remove(T element)
     {
-        return false;
+        HashElement<T> position = findPosition(element);
+
+        if (position == null)
+        {
+            return false; //no element found
+        }
+        else
+        {
+            //remove the element
+            position.active = false;
+            return true;
+        }
+    }
+
+    //findPosition() returns the HashElement where the input element should be
+    private HashElement<T> findPosition(T element)
+    {
+        int hashCode = element.hashCode();
+        int index = hashCode % elements.length;
+
+        //scan for the element
+        while (elements[index] != null && !elements[index].data.equals(element))
+        {
+            index = (index + 1) % elements.length;
+        }
+
+        return elements[index];
     }
 
     public int size()
     {
         return size;
+    }
+
+    @Override
+    public Iterator<T> iterator()
+    {
+        return new TableIterator();
+    }
+
+    private class TableIterator implements Iterator<T>
+    {
+        private int currentIndex = -1;
+
+        public TableIterator()
+        {
+            //find the first element
+            findNextIndex();
+        }
+
+        private void findNextIndex()
+        {
+            //move from the current index to the next non-null, active element
+            do
+            {
+                currentIndex++;
+            } while (currentIndex < elements.length &&
+                     (elements[currentIndex] == null || !elements[currentIndex].active));
+
+            //have we run out of space in the array?
+            if (currentIndex == elements.length)
+            {
+                currentIndex = -1;
+            }
+        }
+
+        @Override
+        public boolean hasNext()
+        {
+            return currentIndex != -1;
+        }
+
+        @Override
+        public T next()
+        {
+            //save the return value
+            T element = elements[currentIndex].data;
+
+            //move to the next valid element
+            findNextIndex();
+
+            //return it
+            return element;
+        }
     }
 
     private class HashElement<T>
