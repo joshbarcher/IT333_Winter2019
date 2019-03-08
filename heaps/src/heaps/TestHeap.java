@@ -6,6 +6,11 @@ public class TestHeap
 {
     public static void main(String[] args)
     {
+
+    }
+
+    private static void basicTests()
+    {
         IPriorityQueue<String> letterHeap = new BinaryHeap<>();
 
         letterHeap.insert("C");
@@ -41,5 +46,10 @@ public class TestHeap
             lastElement = nextElement;
         }
         System.out.println("Heap is working correctly!");
+    }
+
+    private static void changingPriority()
+    {
+
     }
 }
