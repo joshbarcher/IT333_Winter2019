@@ -16,6 +16,24 @@ public class BinaryHeap<T extends Comparable<T>> implements IPriorityQueue<T>
         heap = (T[])new Comparable[DEFAULT_HEAP_SIZE];
     }
 
+    public BinaryHeap(T[] elements)
+    {
+        //copy over elements
+        heap = (T[])new Comparable[elements.length + 1];
+        for (int i = 0; i < elements.length; i++)
+        {
+            heap[i + 1] = elements[i];
+        }
+        size = elements.length;
+        nextIndex = size + 1;
+
+        //build the heap (build-heap or heapify routine)
+        for (int i = size / 2; i >= 1; i--)
+        {
+            sink(i);
+        }
+    }
+
     @Override
     public void insert(T element)
     {
@@ -100,7 +118,7 @@ public class BinaryHeap<T extends Comparable<T>> implements IPriorityQueue<T>
 
             //identify the smallest child
             int smallestChild = leftChild;
-            if (heap[rightChild] != null &&
+            if (rightChild < heap.length && heap[rightChild] != null &&
                 heap[rightChild].compareTo(heap[leftChild]) < 0)
             {
                 smallestChild = rightChild;
@@ -124,7 +142,7 @@ public class BinaryHeap<T extends Comparable<T>> implements IPriorityQueue<T>
     @Override
     public T peek()
     {
-        return null;
+        return heap[1];
     }
 
     @Override
@@ -142,24 +160,98 @@ public class BinaryHeap<T extends Comparable<T>> implements IPriorityQueue<T>
     @Override
     public void clear()
     {
-
+        heap = (T[])new Comparable[DEFAULT_HEAP_SIZE];
+        size = 0;
+        nextIndex = 1;
     }
 
     @Override
     public Iterator<T> iterator()
     {
-        return null;
+        return new Iterator<T>()
+        {
+            private int index = 1;
+
+            @Override
+            public boolean hasNext()
+            {
+                return index <= size;
+            }
+
+            @Override
+            public T next()
+            {
+                return heap[index++];
+            }
+        };
     }
 
     @Override
     public boolean contains(T element)
     {
+        for (int i = 1; i <= size; i++)
+        {
+            if (heap[i].equals(element))
+            {
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
     public boolean remove(T element)
     {
+        //search for the element
+        for (int i = 1; i <= size; i++)
+        {
+            if (heap[i].equals(element))
+            {
+                //replace the removed element with the "last child"
+                swap(i, size);
+                heap[size] = null;
+                size--;
+                nextIndex--;
+
+                //fix my ordering property in the tree
+                updateKey(i);
+                return true;
+            }
+        }
         return false;
+    }
+
+    public void updateKey(T element)
+    {
+        //search for the element
+        for (int i = 1; i <= size; i++)
+        {
+            if (heap[i].equals(element))
+            {
+                updateKey(i);
+                break;
+            }
+        }
+    }
+
+    private void updateKey(int index)
+    {
+        //update the position of the element
+        int parent = index / 2;
+        int leftChild = 2 * index;
+        int rightChild = 2 * index + 1;
+
+        //should I swim()?
+        if (parent > 0 && heap[index].compareTo(heap[parent]) < 0)
+        {
+            swim(index);
+        }
+
+        //should I sink()?
+        if (index <= size / 2 && (heap[index].compareTo(heap[leftChild]) > 0 ||
+                (rightChild <= size && heap[index].compareTo(heap[rightChild]) > 0)))
+        {
+            sink(index);
+        }
     }
 }

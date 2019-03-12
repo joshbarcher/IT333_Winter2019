@@ -6,7 +6,13 @@ public class TestHeap
 {
     public static void main(String[] args)
     {
+        String[] letters = {"z", "q", "h", "p", "s", "g", "i", "v", "a", "r"};
+        IPriorityQueue<String> letterHeap = new BinaryHeap<>(letters);
 
+        while (!letterHeap.isEmpty())
+        {
+            System.out.println(letterHeap.deleteMin());
+        }
     }
 
     private static void basicTests()
@@ -50,6 +56,49 @@ public class TestHeap
 
     private static void changingPriority()
     {
+        IPriorityQueue<Word> wordQueue = new BinaryHeap<>();
 
+        wordQueue.insert(new Word("Hello", 10));
+        wordQueue.insert(new Word("World", 3));
+        wordQueue.insert(new Word("How", 7));
+        wordQueue.insert(new Word("Are", 5));
+        wordQueue.insert(new Word("You", 9));
+        wordQueue.insert(new Word("Today?", 2));
+
+        Word word = new Word("Hi!", 6);
+        wordQueue.insert(word);
+
+        word.setPriority(1);
+        wordQueue.updateKey(word);
+
+        System.out.println(wordQueue);
+    }
+
+    private static void removeAndIterator()
+    {
+        IPriorityQueue<String> letterHeap = new BinaryHeap<>();
+
+        letterHeap.insert("C");
+        letterHeap.insert("K");
+        letterHeap.insert("D");
+        letterHeap.insert("M");
+        letterHeap.insert("N");
+        letterHeap.insert("F");
+        letterHeap.insert("G");
+
+        System.out.println("Looping over heap...");
+        for (String letter : letterHeap)
+        {
+            System.out.println(letter);
+        }
+        System.out.println();
+
+        letterHeap.remove("N");
+
+        //observe the heap...
+        while (!letterHeap.isEmpty())
+        {
+            System.out.println(letterHeap.deleteMin());
+        }
     }
 }

@@ -2,18 +2,18 @@ package heaps;
 
 public class Word implements Comparable<Word>
 {
-    private String messageBody;
+    private String word;
     private int priority;
 
-    public Word(String messageBody, int priority)
+    public Word(String word, int priority)
     {
-        this.messageBody = messageBody;
+        this.word = word;
         this.priority = priority;
     }
 
-    public String getMessageBody()
+    public String getWord()
     {
-        return messageBody;
+        return word;
     }
 
     public int getPriority()
@@ -21,9 +21,9 @@ public class Word implements Comparable<Word>
         return priority;
     }
 
-    public void setMessageBody(String messageBody)
+    public void setWord(String word)
     {
-        this.messageBody = messageBody;
+        this.word = word;
     }
 
     public void setPriority(int priority)
